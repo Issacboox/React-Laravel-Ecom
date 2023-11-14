@@ -1,0 +1,27 @@
+.footerback{
+    background-color: rgba(221, 221, 221, 0.507);
+}
+.footer-text{
+    font-size: 13px;
+    font-family: Roboto Mono;
+    font-weight: 600;
+}
+
+.footer-link{
+    text-decoration: none;
+    color: #000000;
+    font-size: 15px;
+    font-family: Roboto Mono;
+    font-weight: 400;
+}
+.footer-link:hover{
+    text-decoration: none;
+    color: #051b35;
+}
+
+.footer-menu-title{
+    font-size: 18px;
+    color: #000000;
+    font-family: Roboto Mono;
+    font-weight: 600;
+}

@@ -1,0 +1,53 @@
+@media (max-width: 374.98px) {
+  .Mobile {
+    display: contents;
+    margin-bottom: 10px;
+  }
+  .Desktop {
+    display: none;
+  }
+}
+
+@media (min-width: 375.98px) and (max-width: 575.98px) {
+  .Mobile {
+    display: contents;
+  }
+  .Desktop {
+    display: none;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .Mobile {
+    display: contents;
+  }
+  .Desktop {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .Mobile {
+    display: none;
+  }
+  
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .Mobile {
+    display: none;
+  }
+  .Desktop {
+    display: contents;
+
+  }
+}
+
+@media (min-width: 1200px) {
+  .Mobile {
+    display: none;
+  }
+  .Desktop {
+    display: contents;
+  }
+}

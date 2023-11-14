@@ -1,0 +1,55 @@
+.section-title {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    color: #051b35;
+    font-size: 20px;
+    font-family: Roboto Mono;
+    font-weight: 400;
+}
+.section-title-login {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #051b35;
+    font-size: 30px;
+    font-family: Roboto Mono;
+    font-weight: 600;
+}
+ .section-sub-title {
+     color: #212121;
+     font-size: 15px;
+     font-family: Roboto Mono;
+     font-weight: 300;
+ }
+.section-sub-title {
+    color: #212121;
+    font-size: 15px;
+    font-family: Roboto Mono;
+    font-weight: 300;
+}
+.product-name-on-card {
+    color: #051b35;
+    font-size: 18px;
+    font-family: Roboto Mono;
+    font-weight: 600;
+}
+.product-price-on-card {
+    color: #E43023;
+    font-size: 16px;
+    font-family: Roboto Mono;
+    font-weight: 600;
+}
+.category-name{
+    color: #000000;
+    margin-top: 10px;
+    font-size: 16px;
+    font-family: Roboto Mono;
+    font-weight: 600;
+}
+.title-cr{
+    font-size: 55px;
+    font-family: Roboto Mono;
+    font-weight: 600;
+    position: relative;
+    background-color: rgba(153, 216, 241, 0.294);
+    bottom: 200px;
+}

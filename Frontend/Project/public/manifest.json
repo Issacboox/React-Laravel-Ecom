@@ -1,0 +1,23 @@
+{
+    "short_name": "React App",
+    "name": "BeanSprouts",
+    "description":"Sold Beannn",
+    "language":"en-US",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation":"portrait",
+    "theme_color": "#002e62",
+    "background_color": "#ffffff",
+    "icons": [
+      {
+        "src": "store.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      },
+      {
+        "src": "store1.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
