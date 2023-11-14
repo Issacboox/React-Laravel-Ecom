@@ -1,6 +1,8 @@
 import { Component, Fragment } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Logo from "../../assets/images/loginRegister/Data_security_05.jpg";
+
+
 export class UserLogin extends Component {
   render() {
     return (

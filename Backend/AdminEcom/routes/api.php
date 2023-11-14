@@ -6,6 +6,10 @@ use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ProductDetailsController;
 use App\Http\Controllers\Admin\ProductListController;
 use App\Http\Controllers\Admin\VisitorController;
+use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\ForgetController;
+use App\Http\Controllers\User\ResetController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,10 +37,8 @@ Route::get('/allproductlistbysubcategory/{category}/{sub_category}', [ProductLis
 //Product Deatail
 Route::get('/productdetail/{id}', [ProductDetailsController::class,'ProductDetail']);
 
-
 //Slider Route
 Route::get('/allslider', [HomeSliderController::class,'AllSlider']);
-
 
 //Notification
 Route::get('/notification', [NotificationController::class,'AllNotification']);
@@ -47,3 +49,19 @@ Route::get('/search/{key}', [ProductListController::class,'ProductBySearch']);
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+// Clients User Router For Login
+
+//Login API
+Route::post('/login', [AuthController::class,'Login']);
+// Register API
+Route::post('/register', [AuthController::class,'Register']);
+//Forget Password API
+Route::post('/forgetpassword', [ForgetController::class,'ForgetPassword']);
+//Reset Pass
+Route::post('/reset', [ResetController::class,'ResetPassword']);
+
+// User
+Route::get('/user', [UserController::class,'User'])->middleware('auth:api');
+//End For user Login
+

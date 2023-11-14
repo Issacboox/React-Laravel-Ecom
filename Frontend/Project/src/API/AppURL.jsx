@@ -24,6 +24,10 @@ class AppURL {
   static SearchEngin(key) {
     return this.BaseURL + "/search/" + key;
   }
+
+  // this for Login Register Forget Reset Pass
+  static UserLogin = this.BaseURL + "/login";
+  
 }
 
 export default AppURL;
