@@ -1,11 +1,46 @@
 import { Component, Fragment } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Logo from "../../assets/images/loginRegister/Data_security_05.jpg";
-
+import axios from "axios";
+import AppURL from "../../API/AppURL";
+import { Navigate } from "react-router";
 
 export class UserLogin extends Component {
+  constructor() {
+    super();
+    this.state = {
+      email: "",
+      password: "",
+      message: "",
+      loggedIn : false
+    };
+  }
+
+  //Login Form Submit Method
+  formSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      email: this.state.email,
+      password: this.state.password,
+    };
+
+    axios
+      .post(AppURL.UserLogin, data)
+      .then((response) => {
+        localStorage.setItem('token',response.data.token)
+        this.setState({loggedIn:true})
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   render() {
+    if(this.state.loggedIn){
+      return <Navigate to={'/userprofile/'}/>;
+    }
     return (
+      
       <Fragment>
         <Container className="">
           <Row className="p-5">
@@ -18,7 +53,7 @@ export class UserLogin extends Component {
                   sm={6}
                   xs={6}
                 >
-                  <Form className="onboardForm">
+                  <Form className="onboardForm" onSubmit={this.formSubmit}>
                     <h4 className="section-title-login"> USER SING IN </h4>
                     <h6 className="section-sub-title">
                       Please Enter Your Email And Password
@@ -27,14 +62,23 @@ export class UserLogin extends Component {
                       className="form-control m-2"
                       type="email"
                       placeholder="Enter Email"
+                      onChange={(e) => {
+                        this.setState({ email: e.target.value });
+                      }}
                     />
                     <input
                       className="form-control m-2"
                       type="password"
                       placeholder="Enter Password"
+                      onChange={(e) => {
+                        this.setState({ password: e.target.value });
+                      }}
                     />
 
-                    <Button className="btn btn-block m-2 site-btn-login">
+                    <Button
+                      type="submit"
+                      className="btn btn-block m-2 site-btn-login"
+                    >
                       {" "}
                       Sign in{" "}
                     </Button>
