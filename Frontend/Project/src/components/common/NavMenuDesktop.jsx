@@ -15,6 +15,10 @@ export class NavMenuDesktop extends Component {
     this.SeachOnClick = this.SeachOnClick.bind(this);
   }
 
+  logout = () => {
+    localStorage.clear();
+  }
+
   SearchOnChange(event) {
     let Searchkey = event.target.value;
     this.setState({ Searchkey: Searchkey });
@@ -26,9 +30,65 @@ export class NavMenuDesktop extends Component {
   }
   render() {
     if (this.state.SearchRedirectStatus) {
-      return <Navigate to={'/productbysearch/'+ this.state.Searchkey}/>;
+      return <Navigate to={"/productbysearch/" + this.state.Searchkey} />;
     }
 
+    let button;
+    if (localStorage.getItem("token")) {
+      button = (
+        <div>
+          <Link to="/notification" className="btn mt-2">
+            <i className="fa h4 fa-bell"></i>
+            <sup>
+              <span className="badge text-white bg-danger">5</span>
+            </sup>
+          </Link>
+          <a className="btn mt-2">
+            <i className="fa h4 fa-mobile-alt"></i>
+          </a>
+          <Link to="/userprofile" className="h4 btn mt-2">
+            PROFILE
+          </Link>
+          <Link to="/" onClick={this.logout} className="h4 btn mt-2">
+            LOGOUT
+          </Link>
+          <Link to="/cart">
+            <Button className="cart-btn">
+              <i className="fa fa-shopping-cart"></i> 3 Items{" "}
+            </Button>
+          </Link>
+        </div>
+      );
+    } else {
+      button = (
+        <div>
+          <Link to="/notification" className="btn mt-2">
+            <i className="fa h4 fa-bell"></i>
+            <sup>
+              <span className="badge text-white bg-danger">5</span>
+            </sup>
+          </Link>
+          <a className="btn mt-2">
+            <i className="fa h4 fa-mobile-alt"></i>
+          </a>
+          <Link to="/login" className="h4 btn mt-2">
+            LOGIN
+          </Link>
+          <Link to="/register" className="h4 btn mt-2">
+            REGISTER
+          </Link>
+          <Link to="/cart">
+            <Button className="cart-btn">
+              <i className="fa fa-shopping-cart"></i> 3 Items{" "}
+            </Button>
+          </Link>
+        </div>
+      );
+    }
+    
+    if(localStorage.clear){
+      <Navigate to={'/'}/>
+    }
     return (
       <Fragment>
         <div className="TopSectionDown">
@@ -59,26 +119,7 @@ export class NavMenuDesktop extends Component {
                   </div>
                 </Col>
                 <Col className="p-1 mt-0" lg={4} md={4} sm={12} xs={12}>
-                  <Link to="/notification" className="btn mt-2">
-                    <i className="fa h4 fa-bell"></i>
-                    <sup>
-                      <span className="badge text-white bg-danger">5</span>
-                    </sup>
-                  </Link>
-                  <a className="btn mt-2">
-                    <i className="fa h4 fa-mobile-alt"></i>
-                  </a>
-                  <Link to="/login" className="h4 btn mt-2">
-                    LOGIN
-                  </Link>
-                  <Link to="/register" className="h4 btn mt-2">
-                    REGISTER
-                  </Link>
-                  <Link to="/cart">
-                    <Button className="cart-btn">
-                      <i className="fa fa-shopping-cart"></i> 3 Items{" "}
-                    </Button>
-                  </Link>
+                 {button}
                 </Col>
               </Row>
               {this.SearchRedirect}

@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import { Component, Fragment } from "react";
 import NavMenuMobile from "../components/common/NavMenuMobile";
 import NavMenuDesktop from "../components/common/NavMenuDesktop";
@@ -10,6 +12,9 @@ export class ProfilePage extends Component {
   }
 
   render() {
+
+    const User = this.props.user;
+
     return (
       <Fragment>
         <div className="Desktop">
@@ -18,7 +23,7 @@ export class ProfilePage extends Component {
         <div className="Mobile">
           <NavMenuMobile />
         </div>
-        <UserProfile/>
+        <UserProfile user={User} />
         <FooterDesktop />
       </Fragment>
     );

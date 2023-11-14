@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Component, Fragment } from "react";
 import NavMenuMobile from "../components/common/NavMenuMobile";
 import NavMenuDesktop from "../components/common/NavMenuDesktop";
@@ -7,6 +8,9 @@ import UserRegister from "../components/common/UserRegister";
 
 export class RegisterPage extends Component {
   render() {
+    const setUser = this.props.setUser;
+    const user = this.props.user;
+
     return (
       <Fragment>
         <div className="Desktop">
@@ -15,7 +19,7 @@ export class RegisterPage extends Component {
         <div className="Mobile">
           <NavMenuMobile />
         </div>
-        <UserRegister/>
+        <UserRegister setUser={setUser} user={user}/>
         <FooterDesktop />
       </Fragment>
     );
