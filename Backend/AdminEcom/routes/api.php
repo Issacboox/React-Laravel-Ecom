@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\HomeSliderController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ProductDetailsController;
 use App\Http\Controllers\Admin\ProductListController;
+use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\VisitorController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\ForgetController;
@@ -46,9 +47,11 @@ Route::get('/notification', [NotificationController::class,'AllNotification']);
 //Search Route
 Route::get('/search/{key}', [ProductListController::class,'ProductBySearch']);
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+//Smilar Route
+Route::get('/similar/{category}', [ProductDetailsController::class,'SimilarProduct']);
+
+// Review Product 
+Route::get('/reviewlist/{id}', [ReviewController::class,'ReviewList']);
 
 // Clients User Router For Login
 
@@ -56,11 +59,10 @@ Route::get('/search/{key}', [ProductListController::class,'ProductBySearch']);
 Route::post('/login', [AuthController::class,'Login']);
 // Register API
 Route::post('/register', [AuthController::class,'Register']);
-//Forget Password API
+//Forget Password API | Dont Forget to send mail Fix it's later
 Route::post('/forgetpassword', [ForgetController::class,'ForgetPassword']);
 //Reset Pass
 Route::post('/reset', [ResetController::class,'ResetPassword']);
-
 // User
 Route::get('/user', [UserController::class,'User'])->middleware('auth:api');
 //End For user Login

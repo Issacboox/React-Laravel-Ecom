@@ -1,23 +1,42 @@
 /* eslint-disable react/prop-types */
+
 import { Component, Fragment } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import InnerImageZoom from "react-inner-image-zoom";
+import SuggestedProduct from "./SuggestedProduct";
+import ReviewList from "./ReviewList";
+// import { useParams } from "react-router";
 export class ProductDetail extends Component {
   constructor() {
     super();
-    // this.previewImgRef = createRef();
     this.state = {
-      imgPrev: "0",
+      imgPrev: '', // Set to empty initially
     };
   }
+
+  componentDidMount() {
+  let ProductAllData = this.props.data;
+  let image_one =
+    ProductAllData &&
+    ProductAllData["product_detail"] &&
+    ProductAllData["product_detail"][0]
+      ? ProductAllData["product_detail"][0]["image_one"]
+      : "";
+
+  this.setState({ imgPrev: image_one });
+}
 
   imgOnClick = (event) => {
     let imgSrc = event.target.getAttribute("src");
     this.setState({ imgPrev: imgSrc });
   };
-
   render() {
+    // const SuggestedProductPageWrapper = () => {
+    //   const { category } = useParams();
+    //   return <SuggestedProduct category={category} />;
+    // };
+
     let ProductAllData = this.props.data;
     let title =
       ProductAllData &&
@@ -26,17 +45,31 @@ export class ProductDetail extends Component {
         ? ProductAllData["product_list"][0]["title"]
         : "";
 
+    let category =
+      ProductAllData &&
+      ProductAllData["product_list"] &&
+      ProductAllData["product_list"][0]
+        ? ProductAllData["product_list"][0]["category"]
+        : "";
+
     let short_description =
       ProductAllData &&
       ProductAllData["product_detail"] &&
       ProductAllData["product_detail"][0]
         ? ProductAllData["product_detail"][0]["short_description"]
         : "";
+
     let long_description =
       ProductAllData &&
       ProductAllData["product_detail"] &&
       ProductAllData["product_detail"][0]
         ? ProductAllData["product_detail"][0]["long_description"]
+        : "";
+    let product_id =
+      ProductAllData &&
+      ProductAllData["product_detail"] &&
+      ProductAllData["product_detail"][0]
+        ? ProductAllData["product_detail"][0]["product_id"]
         : "";
 
     let image_one =
@@ -94,16 +127,7 @@ export class ProductDetail extends Component {
       ProductAllData["product_list"][0]
         ? ProductAllData["product_list"][0]["unitsale"]
         : "";
-    let image =
-      ProductAllData &&
-      ProductAllData["product_list"] &&
-      ProductAllData["product_list"][0]
-        ? ProductAllData["product_list"][0]["image"]
-        : "";
-
-    if (!this.state.imgPrev === "0") {
-      this.setState({ imgPrev: image });
-    }
+    
     return (
       <Fragment>
         <Container className="BetweenTwoSection">
@@ -120,13 +144,12 @@ export class ProductDetail extends Component {
                   <div style={{ height: "400px", objectFit: "cover" }}>
                     <InnerImageZoom
                       id="previewImg"
-                      ref={this.previewImgRef}
-                      className="w-100".
-                      src={this.state.imgPrev}
+                      
+                      className="w-100"
+                      src={image_one}
                       zoomType="hover"
                       zoomScale={1.1}
-                      zoomSrc={this.state.imgPrev}
-                      
+                      zoomSrc={image_one}
                     />
                   </div>
                   {/* <img id="previewImg" ref={this.previewImgRef} alt="Preview" /> */}
@@ -215,8 +238,12 @@ export class ProductDetail extends Component {
                 <Col className="p-3 " md={6} lg={6} sm={12} xs={12}>
                   <h5 className="Product-Name">{title}</h5>
                   <h6 className="section-sub-title">{short_description}</h6>
-                  <div className="input-group">
-                    <div className="Product-price-card d-inline ">
+                  <p className="mt-2">
+                    ประเภท : <strong>{category}</strong>
+                  </p>
+
+                  <div className="input-group mb-1">
+                    <div className="Product-price-card d-inline">
                       {special_price ? (
                         <span>
                           ราคา {price} {sale_unit}
@@ -236,7 +263,6 @@ export class ProductDetail extends Component {
                       {star} ⭐
                     </div>
                   </div>
-
                   <h6 className="mt-2"> Choose Quantity </h6>
                   <select className="form-control form-select">
                     <option>Choose Quantity</option>
@@ -275,58 +301,13 @@ export class ProductDetail extends Component {
                 </Col>
 
                 <Col className="" md={6} lg={6} sm={12} xs={12}>
-                  <h6 className="mt-2">
-                    <b>REVIEWS</b>
-                  </h6>
-                  <p className=" p-0 m-0">
-                    <span className="Review-Title">Kazi Ariyan</span>{" "}
-                    <span className="text-success">
-                      <i className="fa fa-star"></i>{" "}
-                      <i className="fa fa-star"></i>{" "}
-                      <i className="fa fa-star"></i>{" "}
-                      <i className="fa fa-star"></i>{" "}
-                    </span>{" "}
-                  </p>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                    sed diam nonummy nibh euismod tincidunt ut laoreet dolore
-                    magna aliquam erat volutpat.
-                  </p>
-
-                  <p className=" p-0 m-0">
-                    <span className="Review-Title">Kazi Ariyan</span>{" "}
-                    <span className="text-success">
-                      <i className="fa fa-star"></i>{" "}
-                      <i className="fa fa-star"></i>{" "}
-                      <i className="fa fa-star"></i>{" "}
-                      <i className="fa fa-star"></i>{" "}
-                    </span>{" "}
-                  </p>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                    sed diam nonummy nibh euismod tincidunt ut laoreet dolore
-                    magna aliquam erat volutpat.
-                  </p>
-
-                  <p className=" p-0 m-0">
-                    <span className="Review-Title">Kazi Ariyan</span>{" "}
-                    <span className="text-success">
-                      <i className="fa fa-star"></i>{" "}
-                      <i className="fa fa-star"></i>{" "}
-                      <i className="fa fa-star"></i>{" "}
-                      <i className="fa fa-star"></i>{" "}
-                    </span>{" "}
-                  </p>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                    sed diam nonummy nibh euismod tincidunt ut laoreet dolore
-                    magna aliquam erat volutpat.
-                  </p>
+                  <ReviewList code={product_id} key={title} />
                 </Col>
               </Row>
             </Col>
           </Row>
         </Container>
+        <SuggestedProduct Category={category} key={product_id} />
       </Fragment>
     );
   }

@@ -21,4 +21,9 @@ class ProductDetailsController extends Controller
 
         return $item;
     }
+    public function SimilarProduct(Request $req){
+        $category = $req->category;
+        $productlist = ProductList::where("category",$category)->orderBy('id','desc')->limit(6)->get();
+        return $productlist;
+    }
 }

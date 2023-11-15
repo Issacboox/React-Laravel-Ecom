@@ -3,7 +3,7 @@ import NavMenuMobile from "../components/common/NavMenuMobile";
 import NavMenuDesktop from "../components/common/NavMenuDesktop";
 import FooterDesktop from "../components/common/FooterDesktop";
 import ProductDetail from "../components/product_detail/ProductDetail";
-import SuggestedProduct from "../components/product_detail/SuggestedProduct";
+
 import AppURL from "../API/AppURL";
 import axios from "axios";
 
@@ -39,7 +39,7 @@ export class ProductDetailsPage extends Component {
           <NavMenuMobile />
         </div>
         <ProductDetail data={this.state.ProductData} />
-        <SuggestedProduct />
+        
         <FooterDesktop />
       </Fragment>
     );
