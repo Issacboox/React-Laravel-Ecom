@@ -58,7 +58,7 @@ export class AppRoute extends Component {
           />
           <Route
             path="/productdetails/:id"
-            element={<ProductDetailPageWrapper />}
+            element={<ProductDetailPageWrapper user={this.state.user} setUser={this.setUser} />}
           />
           <Route path="/notification" element={<NotificationPage />} />
           <Route path="/cart" element={<CartPage />} />

@@ -17,7 +17,6 @@ class ReviewList extends Component {
     axios
       .get(AppURL.ProductReview(ProductId))
       .then((response) => {
-        console.log('API Response:', response);
         this.setState({ ProductReview: response.data });
       })
       .catch(() => {

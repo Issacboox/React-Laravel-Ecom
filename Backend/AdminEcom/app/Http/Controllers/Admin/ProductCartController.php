@@ -44,7 +44,7 @@ class ProductCartController extends Controller
         'total_price' => $total_price,
     ]);
 
-    return response()->json(['success' => 'Product added to cart successfully']);
+    return response()->json(1);
 }
 
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Component, Fragment } from "react";
 import NavMenuMobile from "../components/common/NavMenuMobile";
 import NavMenuDesktop from "../components/common/NavMenuDesktop";
@@ -30,6 +31,7 @@ export class ProductDetailsPage extends Component {
   }
 
   render() {
+    const User = this.props.user;
     return (
       <Fragment>
         <div className="Desktop">
@@ -38,7 +40,7 @@ export class ProductDetailsPage extends Component {
         <div className="Mobile">
           <NavMenuMobile />
         </div>
-        <ProductDetail data={this.state.ProductData} />
+        <ProductDetail data={this.state.ProductData} user={User} />
         
         <FooterDesktop />
       </Fragment>

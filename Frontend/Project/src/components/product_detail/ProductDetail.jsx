@@ -6,37 +6,136 @@ import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import InnerImageZoom from "react-inner-image-zoom";
 import SuggestedProduct from "./SuggestedProduct";
 import ReviewList from "./ReviewList";
-// import { useParams } from "react-router";
+import Swal from "sweetalert2";
+import axios from 'axios'
+import AppURL from "../../API/AppURL";
 export class ProductDetail extends Component {
   constructor() {
     super();
     this.state = {
-      imgPrev: '', // Set to empty initially
+      imgPrev: "",
+      quantity: "",
+      product_code: null,
+      addToCart: "Add to Cart",
     };
   }
 
   componentDidMount() {
-  let ProductAllData = this.props.data;
-  let image_one =
-    ProductAllData &&
-    ProductAllData["product_detail"] &&
-    ProductAllData["product_detail"][0]
-      ? ProductAllData["product_detail"][0]["image_one"]
-      : "";
+    let ProductAllData = this.props.data;
+    let image_one =
+      ProductAllData &&
+      ProductAllData["product_detail"] &&
+      ProductAllData["product_detail"][0]
+        ? ProductAllData["product_detail"][0]["image_one"]
+        : "";
 
-  this.setState({ imgPrev: image_one });
-}
+    this.setState({ imgPrev: image_one });
+  }
 
   imgOnClick = (event) => {
     let imgSrc = event.target.getAttribute("src");
     this.setState({ imgPrev: imgSrc });
   };
-  render() {
-    // const SuggestedProductPageWrapper = () => {
-    //   const { category } = useParams();
-    //   return <SuggestedProduct category={category} />;
-    // };
 
+  addToCart = () => {
+    let quantity = this.state.quantity;
+    let productCode = this.state.product_code;
+    let email = this.props.user ? this.props.user.email : '';
+    
+    if (quantity.length === 0) {
+      Swal.fire({
+        icon: "error",
+        title: "Please Select Quantity!!!",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+    } else if (!localStorage.getItem('token')) {
+      Swal.fire({
+        icon: "error",
+        title: "Please Login first",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+    } else {
+      this.setState({ addToCart: "Adding..." });
+      let MyFormData = new FormData();
+      MyFormData.append("quantity",quantity);
+      MyFormData.append("product_code",productCode);
+      MyFormData.append("email",email);
+
+      axios.post(AppURL.AddToCart, MyFormData).then(response =>{
+        if(response.data===1){
+          this.setState({addToCart:"Add To Cart"})
+          Swal.fire({
+            icon: "success",
+            title: "Add to Cart Success",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          
+        }else{
+          Swal.fire({
+            icon: "error",
+            title: "Something went wrong!",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+        }
+      }).catch(error => {
+        // Handle error
+        console.error("Error adding to cart:", error);
+        Swal.fire({
+            icon: "error",
+            title: "Something went wrong!",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+        });
+    });
+    }
+  };
+
+  quantityOnChange = (event) => {
+    let quantity = event.target.value;
+    // alert(quantity)
+    this.setState({ quantity: quantity });
+  };
+
+  render() {
     let ProductAllData = this.props.data;
     let title =
       ProductAllData &&
@@ -127,7 +226,11 @@ export class ProductDetail extends Component {
       ProductAllData["product_list"][0]
         ? ProductAllData["product_list"][0]["unitsale"]
         : "";
-    
+
+    // if (this.state.product_code === null) {
+    //   this.setState({ product_code: product_code });
+    // }
+
     return (
       <Fragment>
         <Container className="BetweenTwoSection">
@@ -144,7 +247,6 @@ export class ProductDetail extends Component {
                   <div style={{ height: "400px", objectFit: "cover" }}>
                     <InnerImageZoom
                       id="previewImg"
-                      
                       className="w-100"
                       src={image_one}
                       zoomType="hover"
@@ -264,7 +366,10 @@ export class ProductDetail extends Component {
                     </div>
                   </div>
                   <h6 className="mt-2"> Choose Quantity </h6>
-                  <select className="form-control form-select">
+                  <select
+                    className="form-control form-select"
+                    onChange={this.quantityOnChange}
+                  >
                     <option>Choose Quantity</option>
                     <option value="01">01</option>
                     <option value="02">02</option>
@@ -279,9 +384,13 @@ export class ProductDetail extends Component {
                   </select>
 
                   <div className="input-group mt-3">
-                    <Button className="btn site-btn m-1 " variant="dark">
-                      {" "}
-                      <i className="fa fa-shopping-cart"></i> Add To Cart
+                    <Button
+                      onClick={this.addToCart}
+                      className="btn site-btn m-1 "
+                      variant="dark"
+                    >
+                      <i className="fa fa-shopping-cart"></i>{" "}
+                      {this.state.addToCart}
                     </Button>
 
                     <Button className=" m-1" variant="dark">
