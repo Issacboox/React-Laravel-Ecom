@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { Component, Fragment } from "react";
-
+import { Navigate } from 'react-router-dom'
 export class UserProfile extends Component {
   render() {
     let name;
@@ -11,6 +11,11 @@ export class UserProfile extends Component {
       name = this.props.user.name;
       email = this.props.user.email;
     }
+    if(!localStorage.getItem('token')){
+      return <Navigate to={'/login'}/>
+    }
+
+  
     return (
       <Fragment>
         <h1>User Profile Page</h1>

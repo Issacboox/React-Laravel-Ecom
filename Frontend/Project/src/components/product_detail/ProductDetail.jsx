@@ -1,16 +1,20 @@
 /* eslint-disable react/prop-types */
-import { Component, Fragment, createRef } from "react";
+import { Component, Fragment } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-
+import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
+import InnerImageZoom from "react-inner-image-zoom";
 export class ProductDetail extends Component {
   constructor() {
     super();
-    this.previewImgRef = createRef();
+    // this.previewImgRef = createRef();
+    this.state = {
+      imgPrev: "0",
+    };
   }
 
   imgOnClick = (event) => {
     let imgSrc = event.target.getAttribute("src");
-    this.previewImgRef.current.src = imgSrc;
+    this.setState({ imgPrev: imgSrc });
   };
 
   render() {
@@ -90,7 +94,16 @@ export class ProductDetail extends Component {
       ProductAllData["product_list"][0]
         ? ProductAllData["product_list"][0]["unitsale"]
         : "";
+    let image =
+      ProductAllData &&
+      ProductAllData["product_list"] &&
+      ProductAllData["product_list"][0]
+        ? ProductAllData["product_list"][0]["image"]
+        : "";
 
+    if (!this.state.imgPrev === "0") {
+      this.setState({ imgPrev: image });
+    }
     return (
       <Fragment>
         <Container className="BetweenTwoSection">
@@ -104,13 +117,18 @@ export class ProductDetail extends Component {
             >
               <Row>
                 <Col className="p-3" md={6} lg={6} sm={12} xs={12}>
-                  <img
-                    id="previewImg"
-                    ref={this.previewImgRef}
-                    className="w-100"
-                    src={image_one}
-                    style={{ height: "400px", objectFit: "cover" }}
-                  />
+                  <div style={{ height: "400px", objectFit: "cover" }}>
+                    <InnerImageZoom
+                      id="previewImg"
+                      ref={this.previewImgRef}
+                      className="w-100".
+                      src={this.state.imgPrev}
+                      zoomType="hover"
+                      zoomScale={1.1}
+                      zoomSrc={this.state.imgPrev}
+                      
+                    />
+                  </div>
                   {/* <img id="previewImg" ref={this.previewImgRef} alt="Preview" /> */}
 
                   <Container className="my-3">
@@ -219,23 +237,20 @@ export class ProductDetail extends Component {
                     </div>
                   </div>
 
-
-               <h6 className="mt-2"> Choose Quantity  </h6>
-               <select className="form-control form-select">
-               <option>Choose Quantity</option>
-               <option value="01">01</option>
-               <option value="02">02</option>
-               <option value="03">03</option>
-               <option value="04">04</option>
-               <option value="05">05</option>
-               <option value="06">06</option>
-               <option value="07">07</option>
-               <option value="08">08</option>
-               <option value="09">09</option>
-               <option value="10">10</option> 
-
-               </select> 
-
+                  <h6 className="mt-2"> Choose Quantity </h6>
+                  <select className="form-control form-select">
+                    <option>Choose Quantity</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                  </select>
 
                   <div className="input-group mt-3">
                     <Button className="btn site-btn m-1 " variant="dark">

@@ -6,17 +6,16 @@ import AppURL from "../../API/AppURL";
 import { Navigate } from "react-router";
 import axios from "axios";
 
-
 export class UserRegister extends Component {
   constructor() {
     super();
     this.state = {
-      name:'',
+      name: "",
       email: "",
       password: "",
       password_confirmation: "",
       message: "",
-      loggedIn : false
+      loggedIn: false,
     };
   }
 
@@ -27,15 +26,15 @@ export class UserRegister extends Component {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password,
-      password_confirmation:this.state.password_confirmation,
+      password_confirmation: this.state.password_confirmation,
     };
 
     axios
       .post(AppURL.UserRegister, data)
       .then((response) => {
-        localStorage.setItem('token',response.data.token)
-        this.setState({loggedIn:true})
-        this.props.setUser(response.data.user)
+        localStorage.setItem("token", response.data.token);
+        this.setState({ loggedIn: true });
+        this.props.setUser(response.data.user);
       })
       .catch((error) => {
         console.log(error);
@@ -43,8 +42,11 @@ export class UserRegister extends Component {
   };
 
   render() {
-    if(this.state.loggedIn){
-      return <Navigate to={'/userprofile'}/>;
+    if (this.state.loggedIn) {
+      return <Navigate to={"/userprofile"} />;
+    }
+    if(localStorage.getItem('token')){
+      return <Navigate to={'/userprofile'}/>
     }
     return (
       <Fragment>
@@ -67,31 +69,40 @@ export class UserRegister extends Component {
                       type="text"
                       placeholder="Enter Your Name"
                       onChange={(e) => {
-                        this.setState({ name: e.target.value })}}
+                        this.setState({ name: e.target.value });
+                      }}
                     />
                     <input
                       className="form-control m-2 mt-3"
                       type="email"
                       placeholder="Enter Email"
                       onChange={(e) => {
-                        this.setState({ email: e.target.value })}}
+                        this.setState({ email: e.target.value });
+                      }}
                     />
                     <input
                       className="form-control m-2 mt-3"
                       type="password"
                       placeholder="Enter Password mt-3"
                       onChange={(e) => {
-                        this.setState({ password: e.target.value })}}
+                        this.setState({ password: e.target.value });
+                      }}
                     />
                     <input
                       className="form-control m-2 mt-3"
                       type="password"
                       placeholder="Confirm Password"
                       onChange={(e) => {
-                        this.setState({ password_confirmation: e.target.value })}}
+                        this.setState({
+                          password_confirmation: e.target.value,
+                        });
+                      }}
                     />
 
-                    <Button type="submit" className="btn btn-block m-2 site-btn-login">
+                    <Button
+                      type="submit"
+                      className="btn btn-block m-2 site-btn-login"
+                    >
                       {" "}
                       Sign up{" "}
                     </Button>
@@ -104,7 +115,6 @@ export class UserRegister extends Component {
                           color: "black",
                           fontSize: "1rem",
                           fontWeight: "500",
-                        
                         }}
                       >
                         <b>Already have account ?</b>

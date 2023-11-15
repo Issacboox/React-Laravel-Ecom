@@ -41,6 +41,9 @@ export class UserLogin extends Component {
     if(this.state.loggedIn){
       return <Navigate to={'/userprofile'}/>;
     }
+    if(localStorage.getItem('token')){
+      return <Navigate to={'/userprofile'}/>
+    }
     return (
       
       <Fragment>
