@@ -22,6 +22,8 @@ export class ProductDetail extends Component {
 
   componentDidMount() {
     let ProductAllData = this.props.data;
+    // console.log("ProductAllData:", ProductAllData);
+
     let image_one =
       ProductAllData &&
       ProductAllData["product_detail"] &&
@@ -29,7 +31,9 @@ export class ProductDetail extends Component {
         ? ProductAllData["product_detail"][0]["image_one"]
         : "";
 
-    this.setState({ imgPrev: image_one });
+    this.setState({
+      imgPrev: image_one,
+    });
   }
 
   imgOnClick = (event) => {
@@ -38,10 +42,7 @@ export class ProductDetail extends Component {
   };
 
   addToCart = () => {
-    this.setState({ email: this.props.user.email });
     let quantity = this.state.quantity;
-    let productCode = this.state.productCode;
-    let email = this.props.user.email;
 
     if (!quantity) {
       Swal.fire({
@@ -71,45 +72,17 @@ export class ProductDetail extends Component {
           toast.addEventListener("mouseleave", Swal.resumeTimer);
         },
       });
-    } else if (!productCode) {
-      Swal.fire({
-        icon: "error",
-        title: "Err Email",
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-    } else if (!email) {
-      Swal.fire({
-        icon: "error",
-        title: "Err productcode",
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
     } else {
       this.setState({ addToCart: "Adding..." });
       let MyFormData = new FormData();
       MyFormData.append("quantity", quantity);
-      MyFormData.append("product_code", productCode);
-      MyFormData.append("email", email);
+      MyFormData.append("product_code", this.state.productCode);
+      MyFormData.append("email", this.props.user.email);
 
       axios
         .post(AppURL.addToCart, MyFormData)
         .then((response) => {
-          if (response.data === "1") {
+          if (response.data === 1) {
             this.setState({ addToCart: "Add To Cart" });
             Swal.fire({
               icon: "success",
@@ -164,6 +137,7 @@ export class ProductDetail extends Component {
     let quantity = event.target.value;
     this.setState({ quantity: quantity });
   };
+ 
 
   render() {
     let ProductAllData = this.props.data;
@@ -240,9 +214,6 @@ export class ProductDetail extends Component {
         ? ProductAllData["product_list"][0]["product_code"]
         : "";
 
-    if (this.state.productCode === null) {
-      this.setState({ productCode: product_code });
-    }
     let special_price =
       ProductAllData &&
       ProductAllData["product_list"] &&
@@ -261,6 +232,7 @@ export class ProductDetail extends Component {
       ProductAllData["product_list"][0]
         ? ProductAllData["product_list"][0]["unitsale"]
         : "";
+  
 
     return (
       <Fragment>
@@ -431,7 +403,6 @@ export class ProductDetail extends Component {
                   </div>
                 </Col>
               </Row>
-
               <Row>
                 <Col className="" md={6} lg={6} sm={12} xs={12}>
                   <h6 className="mt-2">
@@ -439,7 +410,6 @@ export class ProductDetail extends Component {
                   </h6>
                   <p>{long_description}</p>
                 </Col>
-
                 <Col className="" md={6} lg={6} sm={12} xs={12}>
                   <ReviewList code={product_id} key={title} />
                 </Col>

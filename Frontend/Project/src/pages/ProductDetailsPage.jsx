@@ -36,8 +36,6 @@ export class ProductDetailsPage extends Component {
 
   render() {
     const User = this.props.user;
-
-
     return (
       <Fragment>
         <div className="Desktop">

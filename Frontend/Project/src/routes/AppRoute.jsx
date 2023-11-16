@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useParams } from "react-router-dom";
 import { Component, Fragment } from "react";
 import { Route, Routes } from "react-router-dom";
@@ -80,9 +81,10 @@ const ProductSearchWrapper = () => {
   return <SearchPage searchkey={searchkey} />;
 };
 
-const ProductDetailPageWrapper = () => {
+const ProductDetailPageWrapper = ({user}) => {
   const { id } = useParams();
-  return <ProductDetailsPage id={id} />;
+  
+  return <ProductDetailsPage id={id} user={user} />;
 };
 
 // Create a wrapper component to use the useParams hook
