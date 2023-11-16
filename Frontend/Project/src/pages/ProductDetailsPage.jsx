@@ -8,13 +8,13 @@ import ProductDetail from "../components/product_detail/ProductDetail";
 import AppURL from "../API/AppURL";
 import axios from "axios";
 
-
 export class ProductDetailsPage extends Component {
   constructor(match) {
     super(match);
     this.state = {
       Product: match.id,
       ProductData: [],
+
     };
   }
 
@@ -23,7 +23,11 @@ export class ProductDetailsPage extends Component {
     axios
       .get(AppURL.ProductDetail(this.state.Product))
       .then((response) => {
-        this.setState({ ProductData: response.data });
+        const productData = response.data;
+        this.setState({
+          ProductData: productData,
+         
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -32,6 +36,8 @@ export class ProductDetailsPage extends Component {
 
   render() {
     const User = this.props.user;
+
+
     return (
       <Fragment>
         <div className="Desktop">
@@ -40,8 +46,11 @@ export class ProductDetailsPage extends Component {
         <div className="Mobile">
           <NavMenuMobile />
         </div>
-        <ProductDetail data={this.state.ProductData} user={User} />
-        
+        <ProductDetail
+          data={this.state.ProductData}
+          user={User}
+    
+        />
         <FooterDesktop />
       </Fragment>
     );

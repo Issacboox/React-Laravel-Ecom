@@ -7,7 +7,7 @@ import InnerImageZoom from "react-inner-image-zoom";
 import SuggestedProduct from "./SuggestedProduct";
 import ReviewList from "./ReviewList";
 import Swal from "sweetalert2";
-import axios from 'axios'
+import axios from "axios";
 import AppURL from "../../API/AppURL";
 export class ProductDetail extends Component {
   constructor() {
@@ -15,7 +15,7 @@ export class ProductDetail extends Component {
     this.state = {
       imgPrev: "",
       quantity: "",
-      product_code: null,
+      productCode: null,
       addToCart: "Add to Cart",
     };
   }
@@ -38,11 +38,12 @@ export class ProductDetail extends Component {
   };
 
   addToCart = () => {
+    this.setState({ email: this.props.user.email });
     let quantity = this.state.quantity;
-    let productCode = this.state.product_code;
-    let email = this.props.user ? this.props.user.email : '';
-    
-    if (quantity.length === 0) {
+    let productCode = this.state.productCode;
+    let email = this.props.user.email;
+
+    if (!quantity) {
       Swal.fire({
         icon: "error",
         title: "Please Select Quantity!!!",
@@ -56,7 +57,7 @@ export class ProductDetail extends Component {
           toast.addEventListener("mouseleave", Swal.resumeTimer);
         },
       });
-    } else if (!localStorage.getItem('token')) {
+    } else if (!localStorage.getItem("token")) {
       Swal.fire({
         icon: "error",
         title: "Please Login first",
@@ -70,73 +71,103 @@ export class ProductDetail extends Component {
           toast.addEventListener("mouseleave", Swal.resumeTimer);
         },
       });
+    } else if (!productCode) {
+      Swal.fire({
+        icon: "error",
+        title: "Err Email",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+    } else if (!email) {
+      Swal.fire({
+        icon: "error",
+        title: "Err productcode",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
     } else {
       this.setState({ addToCart: "Adding..." });
       let MyFormData = new FormData();
-      MyFormData.append("quantity",quantity);
-      MyFormData.append("product_code",productCode);
-      MyFormData.append("email",email);
+      MyFormData.append("quantity", quantity);
+      MyFormData.append("product_code", productCode);
+      MyFormData.append("email", email);
 
-      axios.post(AppURL.AddToCart, MyFormData).then(response =>{
-        if(response.data===1){
-          this.setState({addToCart:"Add To Cart"})
-          Swal.fire({
-            icon: "success",
-            title: "Add to Cart Success",
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener("mouseenter", Swal.stopTimer);
-              toast.addEventListener("mouseleave", Swal.resumeTimer);
-            },
-          });
-          
-        }else{
-          Swal.fire({
-            icon: "error",
-            title: "Something went wrong!",
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener("mouseenter", Swal.stopTimer);
-              toast.addEventListener("mouseleave", Swal.resumeTimer);
-            },
-          });
-        }
-      }).catch(error => {
-        // Handle error
-        console.error("Error adding to cart:", error);
-        Swal.fire({
-            icon: "error",
-            title: "Something went wrong!",
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
+      axios
+        .post(AppURL.addToCart, MyFormData)
+        .then((response) => {
+          if (response.data === "1") {
+            this.setState({ addToCart: "Add To Cart" });
+            Swal.fire({
+              icon: "success",
+              title: "Add to Cart Success",
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
                 toast.addEventListener("mouseenter", Swal.stopTimer);
                 toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Something went wrong!",
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+          }
+        })
+        .catch((error) => {
+          // Handle error
+          console.error("Error adding to cart:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Something went wrong!",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
             },
+          });
         });
-    });
     }
   };
 
   quantityOnChange = (event) => {
     let quantity = event.target.value;
-    // alert(quantity)
     this.setState({ quantity: quantity });
   };
 
   render() {
     let ProductAllData = this.props.data;
+
     let title =
       ProductAllData &&
       ProductAllData["product_list"] &&
@@ -208,6 +239,10 @@ export class ProductDetail extends Component {
       ProductAllData["product_list"][0]
         ? ProductAllData["product_list"][0]["product_code"]
         : "";
+
+    if (this.state.productCode === null) {
+      this.setState({ productCode: product_code });
+    }
     let special_price =
       ProductAllData &&
       ProductAllData["product_list"] &&
@@ -226,10 +261,6 @@ export class ProductDetail extends Component {
       ProductAllData["product_list"][0]
         ? ProductAllData["product_list"][0]["unitsale"]
         : "";
-
-    // if (this.state.product_code === null) {
-    //   this.setState({ product_code: product_code });
-    // }
 
     return (
       <Fragment>
