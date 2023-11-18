@@ -22,7 +22,6 @@ export class ProductDetail extends Component {
 
   componentDidMount() {
     let ProductAllData = this.props.data;
-    // console.log("ProductAllData:", ProductAllData);
 
     let image_one =
       ProductAllData &&
@@ -35,6 +34,29 @@ export class ProductDetail extends Component {
       imgPrev: image_one,
     });
   }
+  componentDidUpdate(PreviosProps) {
+    let ProductAllData = this.props.data;
+    let PrevProductAllData = PreviosProps.data;
+
+    let productCode =
+      ProductAllData &&
+      ProductAllData["product_list"] &&
+      ProductAllData["product_list"][0]
+        ? ProductAllData["product_list"][0]["product_code"]
+        : "";
+    let PrevProductCode =
+      PrevProductAllData &&
+      PrevProductAllData["product_list"] &&
+      PrevProductAllData["product_list"][0]
+        ? PrevProductAllData["product_list"][0]["product_code"]
+        : "";
+
+    if (productCode !== PrevProductCode) {
+      this.setState({
+        productCode: productCode, // Set the productCode here
+      });
+    }
+  }
 
   imgOnClick = (event) => {
     let imgSrc = event.target.getAttribute("src");
@@ -43,7 +65,6 @@ export class ProductDetail extends Component {
 
   addToCart = () => {
     let quantity = this.state.quantity;
-
     if (!quantity) {
       Swal.fire({
         icon: "error",
@@ -137,10 +158,10 @@ export class ProductDetail extends Component {
     let quantity = event.target.value;
     this.setState({ quantity: quantity });
   };
- 
 
   render() {
     let ProductAllData = this.props.data;
+    // console.log(this.state);
 
     let title =
       ProductAllData &&
@@ -232,7 +253,6 @@ export class ProductDetail extends Component {
       ProductAllData["product_list"][0]
         ? ProductAllData["product_list"][0]["unitsale"]
         : "";
-  
 
     return (
       <Fragment>
